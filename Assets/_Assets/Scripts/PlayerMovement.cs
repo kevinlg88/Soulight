@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float acceleration = 10f; // suaviza movimento
-    [SerializeField] float rotationSpeed = 10f; // suaviza rotação
+    [SerializeField] float acceleration = 10f;
+    [SerializeField] float rotationSpeed = 10f;
 
     InputSystem_Actions inputActions;
     Rigidbody rb;
@@ -37,12 +37,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 targetVelocity = new Vector3(direction.x, 0, direction.y) * moveSpeed;
 
-        // suaviza aceleração/desaceleração
         currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         rb.linearVelocity = currentVelocity;
 
         animator.SetBool("isMoving", direction != Vector2.zero);
-        // suaviza rotação apenas quando há movimento
+
         if (direction.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y));

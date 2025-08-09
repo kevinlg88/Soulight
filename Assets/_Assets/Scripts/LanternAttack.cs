@@ -40,7 +40,6 @@ public class LanternAttack : MonoBehaviour
 
         GameObject go = Instantiate(lanternLight, transform.position, Quaternion.identity);
 
-        // 1️⃣ Ir até o inimigo
         while (targetEnemy != null && Vector3.Distance(go.transform.position, targetEnemy.position) > 0.1f)
         {
             go.transform.position = Vector3.MoveTowards(go.transform.position, targetEnemy.position, speed * Time.deltaTime);
@@ -50,7 +49,6 @@ public class LanternAttack : MonoBehaviour
         Debug.Log("Enemy take damage");
         yield return new WaitForSeconds(hitDelay);
 
-        // 2️⃣ Voltar para o jogador
         while (Vector3.Distance(go.transform.position, transform.position) > 0.1f)
         {
             go.transform.position = Vector3.MoveTowards(go.transform.position, transform.position, speed * Time.deltaTime);
