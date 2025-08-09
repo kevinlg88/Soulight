@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6c8b03e19d11cdc4ca40dc50d278f571
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 15667
+  packageName: Taichi Character Pack
+  packageVersion: 1.16
+  assetPath: Assets/TaichiCharacterPack/Shaders/toon_hair_urp.shader
+  uploadId: 746711

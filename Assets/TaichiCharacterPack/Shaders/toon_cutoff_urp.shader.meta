@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 006da5e40e676824cb43861673e2120f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 15667
+  packageName: Taichi Character Pack
+  packageVersion: 1.16
+  assetPath: Assets/TaichiCharacterPack/Shaders/toon_cutoff_urp.shader
+  uploadId: 746711

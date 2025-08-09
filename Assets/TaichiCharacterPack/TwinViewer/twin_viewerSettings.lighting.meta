@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8b797e45fcc562a42952d806e8abd4fc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 15667
+  packageName: Taichi Character Pack
+  packageVersion: 1.16
+  assetPath: Assets/TaichiCharacterPack/TwinViewer/twin_viewerSettings.lighting
+  uploadId: 746711
