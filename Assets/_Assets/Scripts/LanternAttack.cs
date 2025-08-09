@@ -1,14 +1,12 @@
 using UnityEngine;
-using DG.Tweening;
 using System.Collections;
-using System;
 
 public class LanternAttack : MonoBehaviour
 {
     [SerializeField] GameObject lanternLight;
-    [SerializeField] float TimeToCompleteAnim = 5f;
-    [SerializeField] float hitDelay;
-    [SerializeField] float attackCooldown = 4f;
+    [SerializeField] float speed = 10f;
+    [SerializeField] float hitDelay = 0.5f;
+    [SerializeField] float attackCooldown = 2f;
     [SerializeField] float attackDamage = 5f;
 
     Transform targetEnemy;
@@ -19,10 +17,11 @@ public class LanternAttack : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy in range");
             targetEnemy = other.transform;
             canAttack = true;
-            StartCoroutine(Attack());
+
+            if (!isAttacking)
+                StartCoroutine(Attack());
         }
     }
 
@@ -38,31 +37,34 @@ public class LanternAttack : MonoBehaviour
     {
         if (!canAttack || isAttacking) yield break;
         isAttacking = true;
+
         GameObject go = Instantiate(lanternLight, transform.position, Quaternion.identity);
 
-        DOTween.Kill(transform);
-        Sequence seq = DOTween.Sequence();
-
-        // Go to enemy
-        seq.Append(go.transform.DOMove(targetEnemy.position, TimeToCompleteAnim).SetEase(Ease.OutQuad)
-            .OnComplete(() =>
-            {
-                Debug.Log("Enemy take damage");
-
-            }));
-
-        seq.AppendInterval(hitDelay);
-
-        seq.Append(go.transform.DOMove(transform.position, TimeToCompleteAnim).SetEase(Ease.InQuad)
-            .OnComplete(() =>
-            {
-                Debug.Log("Back to the lantern");
-            }));
-        seq.AppendInterval(hitDelay);
-        seq.OnComplete(() =>
+        // 1️⃣ Ir até o inimigo
+        while (targetEnemy != null && Vector3.Distance(go.transform.position, targetEnemy.position) > 0.1f)
         {
-            Destroy(go, 1);
-        });
+            go.transform.position = Vector3.MoveTowards(go.transform.position, targetEnemy.position, speed * Time.deltaTime);
+            yield return null;
+        }
+
+        Debug.Log("Enemy take damage");
+        yield return new WaitForSeconds(hitDelay);
+
+        // 2️⃣ Voltar para o jogador
+        while (Vector3.Distance(go.transform.position, transform.position) > 0.1f)
+        {
+            go.transform.position = Vector3.MoveTowards(go.transform.position, transform.position, speed * Time.deltaTime);
+            yield return null;
+        }
+
+        Debug.Log("Back to the lantern");
+        Destroy(go,2f);
+        while (go != null)
+        {
+            go.transform.position = Vector3.MoveTowards(go.transform.position, transform.position, speed * Time.deltaTime);
+            yield return null;
+        }
+
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
     }
