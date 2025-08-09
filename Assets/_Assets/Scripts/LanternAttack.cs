@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
+using System;
 
 public class LanternAttack : MonoBehaviour
 {
@@ -13,14 +15,14 @@ public class LanternAttack : MonoBehaviour
     bool isAttacking = false;
     bool canAttack = false;
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
             Debug.Log("Enemy in range");
             targetEnemy = other.transform;
             canAttack = true;
-            Attack();
+            StartCoroutine(Attack());
         }
     }
 
@@ -32,9 +34,9 @@ public class LanternAttack : MonoBehaviour
         }
     }
 
-    public void Attack()
+    IEnumerator Attack()
     {
-        if (!canAttack || isAttacking) return;
+        if (!canAttack || isAttacking) yield break;
         isAttacking = true;
         GameObject go = Instantiate(lanternLight, transform.position, Quaternion.identity);
 
@@ -59,9 +61,9 @@ public class LanternAttack : MonoBehaviour
         seq.AppendInterval(hitDelay);
         seq.OnComplete(() =>
         {
-            isAttacking = false;
-            Destroy(go,1);
+            Destroy(go, 1);
         });
-
+        yield return new WaitForSeconds(attackCooldown);
+        isAttacking = false;
     }
 }
