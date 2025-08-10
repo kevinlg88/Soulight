@@ -178,7 +178,7 @@ public class InventoryView : MonoBehaviour
             {
                 item.itemData = null;
                 item.image.sprite = null;
-                return;
+                break;
             }
         }
     }
