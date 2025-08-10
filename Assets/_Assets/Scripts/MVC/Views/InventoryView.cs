@@ -18,22 +18,25 @@ public class InventoryView : MonoBehaviour
     [SerializeField] TextMeshProUGUI healthValueText;
     [SerializeField] TextMeshProUGUI atkValueText;
     [SerializeField] TextMeshProUGUI defValueText;
-    [SerializeField] List<Slot> slots = new List<Slot>();
+    [SerializeField] List<Slot> statusSlots = new List<Slot>();
 
     [Header("Inventory Panel")]
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] List<Slot> inventorySlots = new List<Slot>();
 
-    private InventoryController _inventoryController;
 
+    private InventoryEvent _inventoryEvent;
 
     [Inject]
-    public void Construct(InventoryEvent inventoryEvent)
+    public void Construct(InventoryEvent inventoryEvent, InventoryController inventoryController)
     {
+        _inventoryEvent = inventoryEvent;
+        inventoryController.SetInventoryEvent(inventoryEvent);
         //Inventory events
         inventoryEvent.OnItemAdded.AddListener(AddItemToInventory);
         inventoryEvent.OnItemRemoved.AddListener(RemoveItemFromInventory);
         inventoryEvent.OnItemSelected.AddListener(ShowItemDescription);
+        inventoryEvent.OnItemUsed.AddListener(UseItem);
 
         //Gear events
         inventoryEvent.OnGearEquiped.AddListener(UpdateStatusPanel);
@@ -86,6 +89,35 @@ public class InventoryView : MonoBehaviour
         }
     }
 
+    void ConsumeItem(ItemData itemData)
+    {
+        ConsumableData consumable = itemData as ConsumableData;
+        foreach (StatusConsumable status in consumable.status)
+        {
+            switch (status.enumStatus)
+            {
+                case EnumConsumable.IncreaseHealth:
+                    int.TryParse(healthValueText.text, out int currentHealth);
+                    currentHealth += status.value;
+                    healthValueText.text = $"{currentHealth}";
+                    break;
+                case EnumConsumable.IncreaseDefense:
+                    int.TryParse(defValueText.text, out int currentDef);
+                    currentDef += status.value;
+                    defValueText.text = $"{currentDef}";
+                    break;
+                case EnumConsumable.IncreaseAttack:
+                    int.TryParse(atkValueText.text, out int currentAtk);
+                    currentAtk += status.value;
+                    atkValueText.text = $"{currentAtk}";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
     void UnEquipGear(ItemData itemData)
     {
         GearData gear = itemData as GearData;
@@ -123,7 +155,6 @@ public class InventoryView : MonoBehaviour
             {
                 item.itemData = itemData;
                 item.image.sprite = itemData.itemIcon;
-                //Add Item to inventory model by controller
                 return;
             }
         }
@@ -138,10 +169,31 @@ public class InventoryView : MonoBehaviour
             {
                 item.itemData = null;
                 item.image.sprite = null;
-                //Remove Item from inventory model by controller
                 return;
             }
         }
+    }
+
+    void UseItem(ItemData itemData)
+    {
+        if (itemData is GearData)
+        {
+            foreach (var item in statusSlots)
+            {
+                DraggableItem draggableItem = item.transform.GetChild(0).GetComponent<DraggableItem>();
+                if (draggableItem.itemData == null)
+                {
+                    draggableItem.itemData = itemData;
+                    draggableItem.image.sprite = itemData.itemIcon;
+                    draggableItem.wasEquipped = true;
+                    _inventoryEvent.OnGearEquiped.Invoke(itemData);
+                    Debug.Log($"Equipped {itemData.itemName} in slot {item.name}");
+                    return;
+                }
+            }
+        }
+        else if (itemData is ConsumableData) ConsumeItem(itemData);
+        RemoveItemFromInventory(itemData);
     }
 
 }

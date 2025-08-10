@@ -10,4 +10,8 @@ public class InventoryModel
     {
         items.Add(item);
     }
+    public void RemoveItem(ItemData item)
+    {
+        items.Remove(item);
+    }
 }

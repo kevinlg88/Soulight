@@ -18,7 +18,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
         if(itemData == null) return;
-        Debug.Log("OnBeginDrag");
         if(transform.parent.GetComponent<Slot>().SlotType == EnumSlotType.Equipment) wasEquipped = true;
         originalParent = transform.parent;
         transform.SetParent(transform.root);
@@ -29,13 +28,11 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnDrag(PointerEventData eventData)
     {
         if(itemData == null) return;
-        Debug.Log("OnDrag");
         transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
         transform.SetParent(originalParent);
         image.raycastTarget = true;
     }

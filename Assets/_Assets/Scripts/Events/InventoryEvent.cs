@@ -11,4 +11,7 @@ public class InventoryEvent
     //Gear events
     public UnityEvent<ItemData> OnGearEquiped = new UnityEvent<ItemData>();
     public UnityEvent<ItemData> OnGearUnEquiped = new UnityEvent<ItemData>();
+
+    //Items Events
+    public UnityEvent<ItemData> OnItemUsed = new UnityEvent<ItemData>();
 }

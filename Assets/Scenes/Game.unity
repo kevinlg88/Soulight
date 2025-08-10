@@ -9783,6 +9783,8 @@ MonoBehaviour:
   atkValueText: {fileID: 1850180313}
   defValueText: {fileID: 893243988}
   slots: []
+  inventoryPanel: {fileID: 0}
+  inventorySlots: []
 --- !u!1001 &422142064
 PrefabInstance:
   m_ObjectHideFlags: 0
