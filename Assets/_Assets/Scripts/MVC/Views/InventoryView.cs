@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -19,11 +20,22 @@ public class InventoryView : MonoBehaviour
     [SerializeField] TextMeshProUGUI defValueText;
     [SerializeField] List<Slot> slots = new List<Slot>();
 
+    [Header("Inventory Panel")]
+    [SerializeField] GameObject inventoryPanel;
+    [SerializeField] List<Slot> inventorySlots = new List<Slot>();
+
+    private InventoryController _inventoryController;
+
 
     [Inject]
     public void Construct(InventoryEvent inventoryEvent)
     {
+        //Inventory events
+        inventoryEvent.OnItemAdded.AddListener(AddItemToInventory);
+        inventoryEvent.OnItemRemoved.AddListener(RemoveItemFromInventory);
         inventoryEvent.OnItemSelected.AddListener(ShowItemDescription);
+
+        //Gear events
         inventoryEvent.OnGearEquiped.AddListener(UpdateStatusPanel);
         inventoryEvent.OnGearUnEquiped.AddListener(UnEquipGear);
     }
@@ -75,7 +87,7 @@ public class InventoryView : MonoBehaviour
     }
 
     void UnEquipGear(ItemData itemData)
-    { 
+    {
         GearData gear = itemData as GearData;
         foreach (StatusGear status in gear.statusGears)
         {
@@ -99,6 +111,37 @@ public class InventoryView : MonoBehaviour
                 default:
                     break;
             }
-        } 
+        }
     }
+
+    void AddItemToInventory(ItemData itemData)
+    {
+        foreach (Slot slot in inventorySlots)
+        {
+            DraggableItem item = slot.transform.GetChild(0).GetComponent<DraggableItem>();
+            if (item.itemData == null)
+            {
+                item.itemData = itemData;
+                item.image.sprite = itemData.itemIcon;
+                //Add Item to inventory model by controller
+                return;
+            }
+        }
+    }
+
+    void RemoveItemFromInventory(ItemData itemData)
+    {
+        foreach (Slot slot in inventorySlots)
+        {
+            DraggableItem item = slot.transform.GetChild(0).GetComponent<DraggableItem>();
+            if (item.itemData == itemData)
+            {
+                item.itemData = null;
+                item.image.sprite = null;
+                //Remove Item from inventory model by controller
+                return;
+            }
+        }
+    }
+
 }
