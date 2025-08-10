@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1958f79dce1de45a4dadd35e49d93d, type: 3}
+  m_Name: Best Helmet
+  m_EditorClassIdentifier: 
+  itemName: Best Helmet
+  itemIcon: {fileID: 2077700529, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
+  description: Increase DEF
+  enumGearSlot: 0
+  statusGears:
+  - enumStatus: 2
+    value: 50

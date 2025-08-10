@@ -3,6 +3,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
+[System.Serializable]
+public class ItemUI
+{
+    public string sprite;
+    public ItemDataSave itemDataSave;
+    public bool wasEquipped;
+    public int positionInInventory;
+}
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public Image image;
@@ -16,7 +24,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     void Awake()
     {
         positionInInventory = transform.GetSiblingIndex();
-        if(transform.parent.GetComponent<Slot>().SlotType == EnumSlotType.Equipment) wasEquipped = true;
+        if (transform.parent.GetComponent<Slot>().SlotType == EnumSlotType.Equipment) wasEquipped = true;
     }
 
     [Inject]
@@ -36,13 +44,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(itemData == null) return;
+        if (itemData == null) return;
         transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(originalParent);
+        positionInInventory = transform.GetSiblingIndex();
         image.raycastTarget = true;
     }
 

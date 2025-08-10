@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class InventoryView : MonoBehaviour
     private ItemData selectedItemData;
 
     [Inject]
-    public void Construct(InventoryEvent inventoryEvent, InventoryController inventoryController)
+    public void Construct(InventoryEvent inventoryEvent, InventoryController inventoryController, LoadGame loadGame)
     {
         _inventoryEvent = inventoryEvent;
         _inventoryController = inventoryController;
@@ -47,6 +48,7 @@ public class InventoryView : MonoBehaviour
         inventoryEvent.OnGearUnEquiped.AddListener(UnEquipGear);
 
         trash.onClick.AddListener(DeleteItem);
+        LoadGame(loadGame);
     }
 
     void ShowItemDescription(ItemData itemData)
@@ -204,7 +206,7 @@ public class InventoryView : MonoBehaviour
         else if (itemData is ConsumableData) ConsumeItem(itemData);
         RemoveItemFromInventory(itemData);
     }
-    
+
     void DeleteItem()
     {
         if (selectedItemData == null) return;
@@ -215,6 +217,115 @@ public class InventoryView : MonoBehaviour
         itemNameText.text = string.Empty;
         itemDescriptionText.text = string.Empty;
         itemIconImage.sprite = null;
+    }
+
+    public int GetHp()
+    {
+        int.TryParse(healthValueText.text, out int value);
+        return value;
+    }
+
+    public int GetAtk()
+    {
+        int.TryParse(atkValueText.text, out int value);
+        return value;
+    }
+
+    public int GetDef()
+    {
+        int.TryParse(defValueText.text, out int value);
+        return value;
+    }
+
+    public List<ItemUI> GetStatusEquip()
+    {
+        List<ItemUI> itemsUI = new List<ItemUI>();
+        for (int i = 0; i < statusSlots.Count - 1; i++)
+        {
+            ItemUI itemUI = new ItemUI();
+            itemUI.itemDataSave = new ItemDataSave();
+            DraggableItem draggable = statusSlots[i].transform.GetChild(0).GetComponent<DraggableItem>();
+            itemUI.sprite = draggable.image?.sprite != null
+                                ? draggable.image.sprite.name
+                                : null;
+
+            itemUI.itemDataSave.itemName = draggable.itemData?.itemName;
+            itemUI.itemDataSave.sprite = draggable.itemData?.itemIcon?.name;
+            itemUI.itemDataSave.description = draggable.itemData?.description;
+            itemUI.wasEquipped = draggable.wasEquipped;
+            itemUI.positionInInventory = draggable.positionInInventory;
+            itemsUI.Add(itemUI);
+        }
+        return itemsUI;
+    }
+
+    public List<ItemUI> GetInventory()
+    {
+        List<ItemUI> itemsUI = new List<ItemUI>();
+        for (int i = 0; i < inventorySlots.Count - 1; i++)
+        {
+            ItemUI itemUI = new ItemUI();
+            itemUI.itemDataSave = new ItemDataSave();
+            DraggableItem draggable = inventorySlots[i].transform.GetChild(0).GetComponent<DraggableItem>();
+            itemUI.sprite = draggable.image?.sprite != null
+                                ? draggable.image.sprite.name
+                                : null;
+            itemUI.itemDataSave.itemName = draggable.itemData?.itemName;
+            itemUI.itemDataSave.sprite = draggable.itemData?.itemIcon?.name;
+            itemUI.itemDataSave.description = draggable.itemData?.description;
+            itemUI.wasEquipped = draggable.wasEquipped;
+            itemUI.positionInInventory = draggable.positionInInventory;
+            itemsUI.Add(itemUI);
+        }
+        return itemsUI;
+    }
+
+    public void SaveGameBtn()
+    {
+        Serializer.SaveGame(this);
+    }
+
+    private void LoadGame(LoadGame loadGame)
+    {
+        if (loadGame._data == null) return;
+        healthValueText.text = $"{loadGame._data.hp}";
+        atkValueText.text = $"{loadGame._data.atk}";
+        defValueText.text = $"{loadGame._data.def}";
+
+        ItemData[] allItems = Resources.LoadAll<ItemData>("Items");
+
+        for (int i = 0; i < statusSlots.Count - 1; i++)
+        {
+            DraggableItem draggable = statusSlots[i].transform.GetChild(0).GetComponent<DraggableItem>();
+            draggable.image.sprite = Resources.Load<Sprite>(loadGame._data.statusEquip[i].sprite);
+            if (draggable.image.sprite)
+            {
+                ItemData itemData = allItems.FirstOrDefault(item => item.itemName == loadGame._data.statusEquip[i].itemDataSave?.itemName);
+                draggable.itemData = itemData;
+                draggable.itemData.itemName = loadGame._data.statusEquip[i].itemDataSave?.itemName;
+                draggable.itemData.itemIcon = Resources.Load<Sprite>(loadGame._data.statusEquip[i].itemDataSave?.sprite);
+                draggable.itemData.description = loadGame._data.statusEquip[i].itemDataSave?.description;
+            }
+            draggable.wasEquipped = loadGame._data.statusEquip[i].wasEquipped;
+            draggable.positionInInventory = loadGame._data.statusEquip[i].positionInInventory;
+        }
+
+        for (int i = 0; i < inventorySlots.Count - 1; i++)
+        {
+            DraggableItem draggable = inventorySlots[i].transform.GetChild(0).GetComponent<DraggableItem>();
+            draggable.image.sprite = Resources.Load<Sprite>(loadGame._data.inventory[i].sprite);
+            if (draggable.image.sprite)
+            {
+                ItemData itemData = allItems.FirstOrDefault(item => item.itemName == loadGame._data.inventory[i].itemDataSave?.itemName);
+                draggable.itemData = itemData;
+                draggable.itemData.itemName = loadGame._data.inventory[i].itemDataSave?.itemName;    
+                draggable.itemData.itemIcon = Resources.Load<Sprite>(loadGame._data.inventory[i].itemDataSave?.sprite);
+                draggable.itemData.description = loadGame._data.inventory[i].itemDataSave?.description;
+            }
+            draggable.wasEquipped = loadGame._data.inventory[i].wasEquipped;
+            draggable.positionInInventory = loadGame._data.inventory[i].positionInInventory;
+        }
+
     }
 
 }

@@ -7,7 +7,7 @@ public static class Serializer
     public static void SaveGame(InventoryView inventoryView)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/Saves.kevin";
+        string path = Application.persistentDataPath + "/SaveData.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         GameData data = new GameData(inventoryView);
@@ -18,7 +18,7 @@ public static class Serializer
 
     public static GameData LoadGame()
     {
-        string path = Application.persistentDataPath + "/Saves.kevin";
+        string path = Application.persistentDataPath + "/SaveData.dat";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

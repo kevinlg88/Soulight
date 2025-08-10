@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e1958f79dce1de45a4dadd35e49d93d, type: 3}
-  m_Name: Soldier Boots
+  m_Script: {fileID: 11500000, guid: 44b4a510182b8e24387c301ff01e2941, type: 3}
+  m_Name: Attack Potion
   m_EditorClassIdentifier: 
-  itemName: Wild Necklace
-  itemIcon: {fileID: 2087023973, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
-  description: Increase ATK
-  enumGearSlot: 0
-  statusGears:
+  itemName: Attack Potion
+  itemIcon: {fileID: -373031911, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
+  description: Increase Atk
+  status:
   - enumStatus: 3
-    value: 30
+    value: 5
