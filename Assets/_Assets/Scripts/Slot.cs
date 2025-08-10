@@ -1,9 +1,24 @@
-using Unity.VisualScripting;
+using Zenject;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
+    private InventoryEvent _inventoryEvent;
+    Button button;
+
+    void Awake()
+    {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(SelectItem);
+    }
+
+    [Inject]
+    public void Construct(InventoryEvent inventoryEvent)
+    {
+        _inventoryEvent = inventoryEvent;
+    }
     public void OnDrop(PointerEventData eventData)
     {
         DraggableItem currentItem = transform.GetChild(0).GetComponent<DraggableItem>();
@@ -46,5 +61,12 @@ public class Slot : MonoBehaviour, IDropHandler
         draggable.itemData = null;
         draggable.image.sprite = null;
         draggable.image.color = Color.clear;
+    }
+
+    void SelectItem()
+    { 
+        DraggableItem draggableItem = GetComponentInChildren<DraggableItem>();
+        Debug.Log($"SelectItem: {draggableItem.itemData?.name ?? "No item"}");
+        _inventoryEvent.OnItemSelected.Invoke(draggableItem.itemData);
     }
 }
