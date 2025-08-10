@@ -23,14 +23,18 @@ public class InventoryView : MonoBehaviour
     [Header("Inventory Panel")]
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] List<Slot> inventorySlots = new List<Slot>();
+    [SerializeField] Button trash;
 
 
     private InventoryEvent _inventoryEvent;
+    private InventoryController _inventoryController;
+    private ItemData selectedItemData;
 
     [Inject]
     public void Construct(InventoryEvent inventoryEvent, InventoryController inventoryController)
     {
         _inventoryEvent = inventoryEvent;
+        _inventoryController = inventoryController;
         inventoryController.SetInventoryEvent(inventoryEvent);
         //Inventory events
         inventoryEvent.OnItemAdded.AddListener(AddItemToInventory);
@@ -41,6 +45,8 @@ public class InventoryView : MonoBehaviour
         //Gear events
         inventoryEvent.OnGearEquiped.AddListener(UpdateStatusPanel);
         inventoryEvent.OnGearUnEquiped.AddListener(UnEquipGear);
+
+        trash.onClick.AddListener(DeleteItem);
     }
 
     void ShowItemDescription(ItemData itemData)
@@ -54,6 +60,7 @@ public class InventoryView : MonoBehaviour
             Debug.Log("No item selected, hiding description panel.");
             return;
         }
+        selectedItemData = itemData;
         descriptionPanel.SetActive(true);
         itemNameText.text = itemData.itemName;
         itemDescriptionText.text = itemData.description;
@@ -162,7 +169,7 @@ public class InventoryView : MonoBehaviour
 
     void RemoveItemFromInventory(ItemData itemData)
     {
-        if(itemData == null)return;
+        if (itemData == null) return;
         Debug.Log($"Removing item: {itemData.itemName} from inventory.");
         foreach (Slot slot in inventorySlots)
         {
@@ -196,6 +203,18 @@ public class InventoryView : MonoBehaviour
         }
         else if (itemData is ConsumableData) ConsumeItem(itemData);
         RemoveItemFromInventory(itemData);
+    }
+    
+    void DeleteItem()
+    {
+        if (selectedItemData == null) return;
+        Debug.Log($"Deleting item: {selectedItemData.itemName} from inventory.");
+        _inventoryController.RemoveItem(selectedItemData);
+        selectedItemData = null;
+        descriptionPanel.SetActive(false);
+        itemNameText.text = string.Empty;
+        itemDescriptionText.text = string.Empty;
+        itemIconImage.sprite = null;
     }
 
 }

@@ -7,5 +7,6 @@ public class GameInstaller : MonoInstaller
     {
         Container.Bind<InventoryEvent>().AsSingle();
         Container.Bind<InventoryController>().AsSingle();
+        Container.Bind<GameData>().AsSingle();
     }
 }

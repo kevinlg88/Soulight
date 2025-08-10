@@ -155,10 +155,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lanternLight: {fileID: 490016167334224463, guid: e47c8f17864fc634e840ed510c29f57c, type: 3}
-  TimeToCompleteAnim: 0.5
-  hitDelay: 0.4
-  attackCooldown: 4
+  speed: 15
+  hitDelay: 0.1
+  attackCooldown: 3
   attackDamage: 5
+  secondsToDestroy: 1.08
 --- !u!1 &4805979073774132340
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.047724
+      value: 13.53
       objectReference: {fileID: 0}
     - target: {fileID: 400152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -288,7 +289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.2539296
+      value: -4.33
       objectReference: {fileID: 0}
     - target: {fileID: 400152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -322,6 +323,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 4ed0159a7cf868c4cb14664f680a827f, type: 2}
+    - target: {fileID: 9500000, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 13700000, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -354,6 +359,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2847741180734715363}
+    - targetCorrespondingSourceObject: {fileID: 100152, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6288198875863284344}
   m_SourcePrefab: {fileID: 100100000, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
 --- !u!4 &2367599366878397725 stripped
 Transform:
@@ -413,7 +421,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 68
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &2847741180734715363
 MonoBehaviour:
@@ -427,4 +435,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77dbd97402d3df547abef97b1e9b0f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 3
+  acceleration: 10
+  rotationSpeed: 3
+--- !u!114 &6288198875863284344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2367599366878632253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e888f2de9739ed478f9ebb0f50f5118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventoryItens: 8
+  countItems: 0
+  isInventoryFull: 0
