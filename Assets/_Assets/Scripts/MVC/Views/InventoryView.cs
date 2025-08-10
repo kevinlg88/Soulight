@@ -162,6 +162,8 @@ public class InventoryView : MonoBehaviour
 
     void RemoveItemFromInventory(ItemData itemData)
     {
+        if(itemData == null)return;
+        Debug.Log($"Removing item: {itemData.itemName} from inventory.");
         foreach (Slot slot in inventorySlots)
         {
             DraggableItem item = slot.transform.GetChild(0).GetComponent<DraggableItem>();
@@ -188,7 +190,7 @@ public class InventoryView : MonoBehaviour
                     draggableItem.wasEquipped = true;
                     _inventoryEvent.OnGearEquiped.Invoke(itemData);
                     Debug.Log($"Equipped {itemData.itemName} in slot {item.name}");
-                    return;
+                    break;
                 }
             }
         }

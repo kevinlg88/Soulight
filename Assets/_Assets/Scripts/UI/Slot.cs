@@ -15,13 +15,7 @@ public class Slot : MonoBehaviour, IDropHandler
 
     public EnumSlotType SlotType => slotType;
     private InventoryEvent _inventoryEvent;
-    Button button;
 
-    void Awake()
-    {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(SelectItem);
-    }
 
     [Inject]
     public void Construct(InventoryEvent inventoryEvent)
@@ -74,31 +68,19 @@ public class Slot : MonoBehaviour, IDropHandler
     {
         var tempItemData = currentItem.itemData;
         var tempImage = currentItem.image.sprite;
-        var tempColor = currentItem.image.color;
         SetDraggableItem(currentItem, draggable);
         draggable.itemData = tempItemData;
         draggable.image.sprite = tempImage;
-        draggable.image.color = tempColor;
     }
 
     void SetDraggableItem(DraggableItem currentItem, DraggableItem draggable)
     {
         currentItem.itemData = draggable.itemData;
         currentItem.image.sprite = draggable.image.sprite;
-        currentItem.image.color = draggable.image.color;
     }
     void ClearDraggableItem(DraggableItem draggable)
     {
         draggable.itemData = null;
         draggable.image.sprite = null;
-        draggable.image.color = Color.clear;
-    }
-
-    void SelectItem()
-    {
-        if(slotType != EnumSlotType.Inventory)return;
-        DraggableItem draggableItem = GetComponentInChildren<DraggableItem>();
-        Debug.Log($"SelectItem: {draggableItem.itemData?.name ?? "No item"}");
-        _inventoryEvent.OnItemSelected.Invoke(draggableItem.itemData);
     }
 }

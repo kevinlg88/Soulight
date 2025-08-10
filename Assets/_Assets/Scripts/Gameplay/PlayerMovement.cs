@@ -51,6 +51,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Attacking");
+        //Debug.Log("Attacking");
     }
 }
