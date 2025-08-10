@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1958f79dce1de45a4dadd35e49d93d, type: 3}
   m_Name: Soldier Boots
   m_EditorClassIdentifier: 
-  itemName: Soldier Boots
-  itemIcon: {fileID: -948843078, guid: 5d45194dcba657d4489438a912bc44ac, type: 3}
-  description: Botas de soldado Atk+30 / Vel+10
-  enumGearSlot: 3
+  itemName: Wild Necklace
+  itemIcon: {fileID: 2087023973, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
+  description: Increase ATK
+  enumGearSlot: 0
   statusGears:
   - enumStatus: 3
     value: 30
-  - enumStatus: 4
-    value: 10

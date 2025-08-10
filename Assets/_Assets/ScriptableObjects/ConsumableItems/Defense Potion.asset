@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Defense Potion
   m_EditorClassIdentifier: 
   itemName: Defense Potion
-  itemIcon: {fileID: -968619741, guid: 5d45194dcba657d4489438a912bc44ac, type: 3}
+  itemIcon: {fileID: 304210579, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
   description: Increase DEF
   status:
   - enumStatus: 2

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Diamond Sword
   m_EditorClassIdentifier: 
   itemName: Diamond Sword
-  itemIcon: {fileID: -62212601, guid: 5d45194dcba657d4489438a912bc44ac, type: 3}
-  description: Espada mais poderosa Atk+1
-  enumGearSlot: 2
+  itemIcon: {fileID: 1413313171, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
+  description: Increase ATK
+  enumGearSlot: 0
   statusGears:
   - enumStatus: 3
     value: 1

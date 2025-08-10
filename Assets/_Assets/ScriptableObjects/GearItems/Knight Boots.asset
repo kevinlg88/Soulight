@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1958f79dce1de45a4dadd35e49d93d, type: 3}
   m_Name: Knight Boots
   m_EditorClassIdentifier: 
-  itemName: Knight Boots
-  itemIcon: {fileID: -340052898, guid: 5d45194dcba657d4489438a912bc44ac, type: 3}
+  itemName: Best Helmet
+  itemIcon: {fileID: 2077700529, guid: 417346f52c4d7924cbf58b6429c7e2b3, type: 3}
   description: Increase DEF
-  enumGearSlot: 3
+  enumGearSlot: 0
   statusGears:
   - enumStatus: 2
     value: 50

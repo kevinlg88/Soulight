@@ -8,6 +8,7 @@ public class LanternAttack : MonoBehaviour
     [SerializeField] float hitDelay = 0.5f;
     [SerializeField] float attackCooldown = 2f;
     [SerializeField] float attackDamage = 5f;
+    [SerializeField] float secondsToDestroy = 2f;
 
     Transform targetEnemy;
     bool isAttacking = false;
@@ -56,7 +57,7 @@ public class LanternAttack : MonoBehaviour
         }
 
         Debug.Log("Back to the lantern");
-        Destroy(go,2f);
+        Destroy(go,secondsToDestroy);
         while (go != null)
         {
             go.transform.position = Vector3.MoveTowards(go.transform.position, transform.position, speed * Time.deltaTime);
